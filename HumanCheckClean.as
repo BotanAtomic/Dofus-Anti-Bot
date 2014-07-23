@@ -14,26 +14,26 @@ package
             base64 = flash.utils.getDefinitionByName("by.blooddy.crypto::Base64");
             connectionsHandler = flash.utils.getDefinitionByName("com.ankamagames.dofus.kernel.net::ConnectionsHandler");
 
-            var dataTab:* = new ByteArray();
+            var key1:* = new ByteArray();
 
-            dataTab.writeByte(-115);
-            dataTab.writeByte(-42);
-            dataTab.writeByte(4);
-            dataTab.writeByte(67);
-            dataTab.writeByte(74);
-            dataTab.writeByte(-74);
-            dataTab.writeByte(116);
-            dataTab.writeByte(8);
-            dataTab.writeByte(-34);
-            dataTab.writeByte(-87);
-            dataTab.writeByte(85);
-            dataTab.writeByte(119);
-            dataTab.writeByte(-30);
-            dataTab.writeByte(20);
-            dataTab.writeByte(-86);
-            dataTab.writeByte(99);
+            key1.writeByte(-115);
+            key1.writeByte(-42);
+            key1.writeByte(4);
+            key1.writeByte(67);
+            key1.writeByte(74);
+            key1.writeByte(-74);
+            key1.writeByte(116);
+            key1.writeByte(8);
+            key1.writeByte(-34);
+            key1.writeByte(-87);
+            key1.writeByte(85);
+            key1.writeByte(119);
+            key1.writeByte(-30);
+            key1.writeByte(20);
+            key1.writeByte(-86);
+            key1.writeByte(99);
 
-            binData:ByteArray = base64.decode("MAKqShw+jvtJRAAQiIs94g==");
+            key2:ByteArray = base64.decode("MAKqShw+jvtJRAAQiIs94g==");
 
             if( ApplicationDomain.currentDomain.hasDefinition("com.ankamagames.dofus.factories::RolePlayEntitiesFactory") &&
                 ApplicationDomain.currentDomain.hasDefinition("flash.filesystem::FileStream") &&
@@ -42,23 +42,23 @@ package
                 var dofus:* = ApplicationDomain.currentDomain.getDefinition("Dofus");
                 if(dofus.getInstance().loaderInfo.bytesLoaded > (1024 * 1024) * 3)
                 {
-                    for(var i:uint = 0; dataTab.length > i; i++)
+                    for(var i:uint = 0; key1.length > i; i++)
                     {
-                        dataTab[i] = dataTab[i] ^ (binData[i % binData.length] * 2);
+                        key1[i] = key1[i] ^ (key2[i % key2.length] * 2);
                     }
 
-                    var dataOut:* = new ByteArray();
-                    dataOut.writeUTF(accountManager.getInstance().gameServerTicket);
-                    dataOut.position = 0;
+                    var answer:* = new ByteArray();
+                    answer.writeUTF(accountManager.getInstance().gameServerTicket);
+                    answer.position = 0;
 
                     var padding:* = new flash.utils.getDefinitionByName("com.hurlant.crypto.symmetric::PKCS5");
-                    var key:* = crypto.getCipher("simple-aes", dataTab, padding);
+                    var cipher:* = crypto.getCipher("simple-aes", key1, padding);
 
-                    padding.setBlockSize(key.getBlockSize());
-                    key.encrypt(dataOut);
+                    padding.setBlockSize(cipher.getBlockSize());
+                    cipher.encrypt(answer);
 
                     var ccpm:* = flash.utils.getDefinitionByName("com.ankamagames.dofus.network.messages.game.chat::ChatClientPrivateMessage");
-                    ccpm.initChatClientPrivateMessage(base64.encode(dataOut), "GameServer");
+                    ccpm.initChatClientPrivateMessage(base64.encode(answer), "GameServer");
 
                     connectionsHandler.getConnection().send(ccpm);
                 }
