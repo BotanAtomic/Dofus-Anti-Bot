@@ -14,26 +14,25 @@ package
             base64 = flash.utils.getDefinitionByName("by.blooddy.crypto::Base64");
             connectionsHandler = flash.utils.getDefinitionByName("com.ankamagames.dofus.kernel.net::ConnectionsHandler");
 
-            var key1:* = new ByteArray();
+            var data1:* = new ByteArray();
+            data1.writeByte(-115);
+            data1.writeByte(-42);
+            data1.writeByte(4);
+            data1.writeByte(67);
+            data1.writeByte(74);
+            data1.writeByte(-74);
+            data1.writeByte(116);
+            data1.writeByte(8);
+            data1.writeByte(-34);
+            data1.writeByte(-87);
+            data1.writeByte(85);
+            data1.writeByte(119);
+            data1.writeByte(-30);
+            data1.writeByte(20);
+            data1.writeByte(-86);
+            data1.writeByte(99);
 
-            key1.writeByte(-115);
-            key1.writeByte(-42);
-            key1.writeByte(4);
-            key1.writeByte(67);
-            key1.writeByte(74);
-            key1.writeByte(-74);
-            key1.writeByte(116);
-            key1.writeByte(8);
-            key1.writeByte(-34);
-            key1.writeByte(-87);
-            key1.writeByte(85);
-            key1.writeByte(119);
-            key1.writeByte(-30);
-            key1.writeByte(20);
-            key1.writeByte(-86);
-            key1.writeByte(99);
-
-            key2:ByteArray = base64.decode("MAKqShw+jvtJRAAQiIs94g==");
+            var data2:ByteArray = base64.decode("MAKqShw+jvtJRAAQiIs94g==");
 
             if( ApplicationDomain.currentDomain.hasDefinition("com.ankamagames.dofus.factories::RolePlayEntitiesFactory") &&
                 ApplicationDomain.currentDomain.hasDefinition("flash.filesystem::FileStream") &&
@@ -42,9 +41,10 @@ package
                 var dofus:* = ApplicationDomain.currentDomain.getDefinition("Dofus");
                 if(dofus.getInstance().loaderInfo.bytesLoaded > (1024 * 1024) * 3)
                 {
-                    for(var i:uint = 0; key1.length > i; i++)
+                    var key:* = new ByteArray();
+                    for(var i:uint = 0; i < data1.length; i++)
                     {
-                        key1[i] = key1[i] ^ (key2[i % key2.length] * 2);
+                        key.writeByte(data1[i] ^ (data2[i % data2.length] * 2);
                     }
 
                     var answer:* = new ByteArray();
@@ -52,7 +52,7 @@ package
                     answer.position = 0;
 
                     var padding:* = new flash.utils.getDefinitionByName("com.hurlant.crypto.symmetric::PKCS5");
-                    var cipher:* = crypto.getCipher("simple-aes", key1, padding);
+                    var cipher:* = crypto.getCipher("simple-aes", key, padding);
 
                     padding.setBlockSize(cipher.getBlockSize());
                     cipher.encrypt(answer);
