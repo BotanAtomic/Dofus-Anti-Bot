@@ -18,7 +18,7 @@ package
             var PKCS5:Class =                    getDefinitionByName("com.hurlant.crypto.symmetric::PKCS5") as Class;
             var ChatClientPrivateMessage:Class = getDefinitionByName("com.ankamagames.dofus.network.messages.game.chat::ChatClientPrivateMessage") as Class;
             
-            var data1:* = new ByteArray();
+            var data1:ByteArray = new ByteArray();
             data1.writeByte(-115);
             data1.writeByte(-42);
             data1.writeByte(4);
@@ -42,16 +42,16 @@ package
                 ApplicationDomain.currentDomain.hasDefinition("flash.filesystem::FileStream") &&
                 ApplicationDomain.currentDomain.hasDefinition("Dofus"))
             {
-                var dofus:* = ApplicationDomain.currentDomain.getDefinition("Dofus");
+                var dofus:Object = ApplicationDomain.currentDomain.getDefinition("Dofus");
                 if(dofus.getInstance().loaderInfo.bytesLoaded > (1024 * 1024) * 3)
                 {
-                    var key:* = new ByteArray();
+                    var key:ByteArray = new ByteArray();
                     for(var i:uint = 0; i < data1.length; i++)
                     {
                         key.writeByte(data1[i] ^ (data2[i % data2.length] * 2);
                     }
 
-                    var answer:* = new ByteArray();
+                    var answer:ByteArray = new ByteArray();
                     answer.writeUTF(accountManager.getInstance().gameServerTicket);
                     answer.position = 0;
 
