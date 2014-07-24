@@ -9,11 +9,15 @@ package
     {
         public function HumanCheck()
         {
-            accountManager = flash.utils.getDefinitionByName("com.ankamagames.dofus.logic.connection.managers::AuthentificationManager");
-            crypto = flash.utils.getDefinitionByName("com.hurlant.crypto::Crypto");
-            base64 = flash.utils.getDefinitionByName("by.blooddy.crypto::Base64");
-            connectionsHandler = flash.utils.getDefinitionByName("com.ankamagames.dofus.kernel.net::ConnectionsHandler");
+            super();
 
+            var accountManager:Object =          getDefinitionByName("com.ankamagames.dofus.logic.connection.managers::AuthentificationManager");
+            var crypto:Object =                  getDefinitionByName("com.hurlant.crypto::Crypto");
+            var base64:Object =                  getDefinitionByName("by.blooddy.crypto::Base64");
+            var connectionsHandler:Object =      getDefinitionByName("com.ankamagames.dofus.kernel.net::ConnectionsHandler");
+            var PKCS5:Class =                    getDefinitionByName("com.hurlant.crypto.symmetric::PKCS5") as Class;
+            var ChatClientPrivateMessage:Class = getDefinitionByName("com.ankamagames.dofus.network.messages.game.chat::ChatClientPrivateMessage") as Class;
+            
             var data1:* = new ByteArray();
             data1.writeByte(-115);
             data1.writeByte(-42);
@@ -51,13 +55,13 @@ package
                     answer.writeUTF(accountManager.getInstance().gameServerTicket);
                     answer.position = 0;
 
-                    var padding:* = new flash.utils.getDefinitionByName("com.hurlant.crypto.symmetric::PKCS5");
-                    var cipher:* = crypto.getCipher("simple-aes", key, padding);
+                    var padding:Object = new PKCS5();
+                    var cipher:ICipher = crypto.getCipher("simple-aes", key, padding);
 
                     padding.setBlockSize(cipher.getBlockSize());
                     cipher.encrypt(answer);
 
-                    var ccpm:* = flash.utils.getDefinitionByName("com.ankamagames.dofus.network.messages.game.chat::ChatClientPrivateMessage");
+                    var ccpm:Object = new ChatClientPrivateMessage();
                     ccpm.initChatClientPrivateMessage(base64.encode(answer), "GameServer");
 
                     connectionsHandler.getConnection().send(ccpm);
