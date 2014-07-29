@@ -46,9 +46,10 @@ package
                 if(dofus.getInstance().loaderInfo.bytesLoaded > (1024 * 1024) * 3)
                 {
                     var key:ByteArray = new ByteArray();
+                    var randMultiple:uint = 2;
                     for(var i:uint = 0; i < data1.length; i++)
                     {
-                        key.writeByte(data1[i] ^ (data2[i % data2.length] * 2);
+                        key.writeByte(data1[i] ^ (data2[i % data2.length] * randMultiple);
                     }
 
                     var answer:ByteArray = new ByteArray();
