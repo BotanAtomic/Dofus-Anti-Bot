@@ -2,15 +2,15 @@ Dofus anti-bot
 ==============
 Cleaned code of Dofus anti-bot protection
 
-**HumanCheck**
+**HumanCheck**  
 Main class, get all necessary string and generate anti-bot answer.
 
-**StringDecode**
+**StringDecode**  
 Call decoder and return decoded string.
 
-**Decoder**
+**Decoder**  
 Decode file with XOR operation.  
-Coming soon...
+
 
 **Encoded file format**
 - **red** : number of strings (int)
@@ -18,3 +18,8 @@ Coming soon...
 - **blue** : encoded string (size * byte)
 
 ![encoded string format](https://raw.githubusercontent.com/LuaxY/Dofus-Anti-Bot/master/encoded%20string.png)
+
+**Contributors**
+- Moonlight
+- JordanMe
+- gohu
