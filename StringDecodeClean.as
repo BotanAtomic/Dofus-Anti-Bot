@@ -48,8 +48,8 @@ package
 
             data.readBytes(decoded, 0, size);
 
-            var _loc5_:class_5 = new class_5(key);
-            _loc5_.method_6(decoded);
+            var decoder:Decoder = new Decoder(key);
+            decoder.getString(decoded);
 
             decoded.position = 0;
             stringList.push(decoded.readUTFBytes(decoded.length));
