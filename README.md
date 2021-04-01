@@ -20,6 +20,6 @@ Decode file with XOR operation.
 ![encoded string format](https://raw.githubusercontent.com/LuaxY/Dofus-Anti-Bot/master/encoded%20string.png)
 
 **Contributors**
-- Moonlight
+- Botan
 - JordanMe
 - gohu
